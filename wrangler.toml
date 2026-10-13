@@ -10,7 +10,7 @@ run_worker_first = ["/api/*"]
 
 [vars]
 CEP_ORIGEM = "15061580"
-CONTACT_EMAIL = "SEU-EMAIL@exemplo.com"
+CONTACT_EMAIL = "stevao.oc@gmail.com"
 # Para testes use: https://sandbox.melhorenvio.com.br
 ME_BASE = "https://melhorenvio.com.br"
 # O token NÃO vai aqui. Cadastre ME_TOKEN como Secret no painel da Cloudflare.
