@@ -10,18 +10,170 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- ============ TOPO ============ -->
 <div class="topo">Pix com valor automático • Envio para todo o Brasil</div>
 <header class="cab">
   <a href="#/" class="marca"><img src="img/logo.png" alt="" onerror="this.remove()"><span>Confinamento Santa Cecília</span></a>
   <a href="#/carrinho" class="carrinho" aria-label="Abrir carrinho">Carrinho <b id="cont">0</b></a>
 </header>
-<main id="app"></main>
+
+<main>
+
+<!-- ============ TELA: VITRINE ============ -->
+<!-- Para adicionar produto: copie um <a class="card"> abaixo e a seção "TELA: PRODUTO" correspondente.
+     O "id" precisa ser igual ao id do produto no loja.json. -->
+<section class="tela" data-tela="home">
+  <div class="banner">
+    <h1>Loja oficial do Confinamento</h1>
+    <p>Produtos feitos para quem vive o campo. Pague com Pix e receba em casa.</p>
+  </div>
+  <div class="grade">
+    <a class="card" href="#/produto/bone-oficial">
+      <img class="foto" src="img/bone.jpg" alt="Boné Oficial" loading="lazy">
+      <div>
+        <h3>Boné Oficial Confinamento Santa Cecília</h3>
+        <div class="preco" data-preco="bone-oficial"></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ TELA: PRODUTO (uma seção por produto) ============ -->
+<section class="tela" data-tela="produto" data-id="bone-oficial">
+  <p class="migalha"><a href="#/">Loja</a> / Boné Oficial</p>
+  <div class="prod">
+    <div>
+      <img class="foto principal" src="img/bone.jpg" alt="Boné Oficial">
+      <div class="mini">
+        <!-- uma miniatura por foto; clicar troca a foto grande -->
+        <img class="miniatura" src="img/bone.jpg" alt="Foto 1" onclick="trocarFoto(this)">
+      </div>
+    </div>
+    <div class="info">
+      <h1>Boné Oficial Confinamento Santa Cecília</h1>
+      <div class="preco" data-preco="bone-oficial"></div>
+      <p>Tamanho único com ajuste traseiro. Cor única.</p>
+      <p class="peq">Pagamento por Pix. O frete é calculado no carrinho.</p>
+      <div class="qtd">
+        <button type="button" onclick="mudarQtd(this,-1)" aria-label="Diminuir">−</button>
+        <output>1</output>
+        <button type="button" onclick="mudarQtd(this,1)" aria-label="Aumentar">+</button>
+      </div>
+      <p><button class="prim" type="button" data-comprar onclick="adicionar(this)">Adicionar ao carrinho</button></p>
+      <button class="cont" type="button" data-comprar onclick="adicionar(this,true)">Comprar agora</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TELA: CARRINHO ============ -->
+<section class="tela" data-tela="carrinho">
+  <div id="carrinho-vazio" hidden>
+    <h1>Seu carrinho está vazio</h1>
+    <p><a href="#/">Ver produtos</a></p>
+  </div>
+  <div id="carrinho-cheio">
+    <h1>Carrinho</h1>
+    <div class="dois">
+      <div>
+        <div class="caixa" id="lista-itens"></div>
+        <div class="caixa" style="margin-top:1rem">
+          <h2>Calcular frete</h2>
+          <label>CEP de entrega
+            <div class="linha">
+              <input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code" oninput="mascaraCep(this)">
+              <button class="sec" type="button" id="btn-frete" onclick="calcularFrete()">Calcular frete</button>
+            </div>
+          </label>
+          <p class="aviso-linha" id="msg-frete" role="status"></p>
+          <div id="opcoes-frete"></div>
+        </div>
+        <p><a href="#/">Continuar comprando</a></p>
+      </div>
+      <div>
+        <div class="caixa resumo">
+          <h2>Resumo</h2>
+          <div><span>Produtos</span><span data-r="prod"></span></div>
+          <div><span>Frete</span><span data-r="frete"></span></div>
+          <div class="total"><span>Total</span><span data-r="total"></span></div>
+        </div>
+        <p><button class="prim" type="button" id="btn-pagamento" onclick="irPagamento()" disabled>Continuar para o pagamento</button></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TELA: PAGAMENTO ============ -->
+<section class="tela" data-tela="pagamento">
+  <h1>Pagamento</h1>
+  <div class="dois">
+    <div>
+      <div class="caixa">
+        <h2>1. Dados de entrega</h2>
+        <label>Nome completo <input id="nome" autocomplete="name"></label>
+        <label>Telefone com DDD <input id="tel" inputmode="tel" autocomplete="tel" placeholder="(17) 99999-9999"></label>
+        <label>Rua e número <input id="rua" autocomplete="address-line1"></label>
+        <label>Bairro <input id="bairro"></label>
+        <label>Complemento (opcional) <input id="compl"></label>
+        <div class="duas">
+          <label>Cidade <input id="cidade"></label>
+          <label>UF <input id="uf" maxlength="2"></label>
+        </div>
+      </div>
+      <div class="caixa pix" style="margin-top:1rem">
+        <h2>2. Pague com Pix</h2>
+        <img id="qr" alt="QR Code do Pix" width="200" height="200">
+        <p class="peq">Ou use o Pix copia e cola, já com o valor do pedido:</p>
+        <textarea id="pix-codigo" readonly rows="4"></textarea>
+        <button class="sec" type="button" id="btn-copiar" onclick="copiarPix()">Copiar código Pix</button>
+      </div>
+    </div>
+    <div>
+      <div class="caixa resumo">
+        <h2>Resumo</h2>
+        <div><span>Produtos</span><span data-r="prod"></span></div>
+        <div><span>Frete</span><span data-r="frete"></span></div>
+        <div class="total"><span>Total</span><span data-r="total"></span></div>
+      </div>
+      <div class="alerta">Atenção: sua compra só será processada e enviada depois que você enviar o comprovante do Pix no WhatsApp que vai abrir.</div>
+      <button class="prim" type="button" onclick="finalizar()">Finalizar pedido e enviar no WhatsApp</button>
+      <p class="aviso-linha" id="msg-final" role="status"></p>
+      <p><a href="#/carrinho">Voltar ao carrinho</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
 <div id="toast" role="status"></div>
+
+<!-- ============ RODAPÉ ============ -->
 <footer>
   <p><b>Confinamento Santa Cecília</b></p>
   <p>Dúvidas? Fale com a gente no WhatsApp.</p>
   <p class="peq">Usamos seus dados só para processar o pedido e não os guardamos no site. Troca ou devolução em até 7 dias após o recebimento (direito de arrependimento).</p>
 </footer>
+
+<!-- ============ MODELOS (o JS copia estes blocos) ============ -->
+<template id="tpl-item">
+  <div class="item">
+    <img class="foto" data-f="foto" alt="">
+    <div>
+      <h3 data-f="nome"></h3>
+      <div class="preco" data-f="preco"></div>
+      <button class="x" type="button" data-acao="remover">Remover</button>
+    </div>
+    <div class="qtd">
+      <button type="button" data-acao="menos" aria-label="Diminuir">−</button>
+      <output data-f="qtd"></output>
+      <button type="button" data-acao="mais" aria-label="Aumentar">+</button>
+    </div>
+  </div>
+</template>
+<template id="tpl-frete">
+  <label class="opcao"><input type="radio" name="frete"><span data-f="nome"></span><b data-f="preco"></b></label>
+</template>
+
 <script src="qrcode.js"></script>
 <script src="app.js"></script>
 </body>
