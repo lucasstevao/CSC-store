@@ -1,0 +1,27 @@
+{
+  "loja": {
+    "nome": "Confinamento Santa Cecília",
+    "whatsapp": "5517991310158",
+    "pix_chave": "+5517991310158",
+    "pix_nome": "NOME DO RECEBEDOR",
+    "pix_cidade": "SAO JOSE DO RIO PRETO"
+  },
+  "produtos": [
+    {
+      "id": "bone-oficial",
+      "nome": "Boné Oficial Confinamento Santa Cecília",
+      "descricao": "Tamanho único com ajuste traseiro. Cor única.",
+      "preco": 30.0,
+      "imagem": "img/bone.jpg",
+      "ativo": true,
+      "peso_kg": 0.25,
+      "comprimento_cm": 16,
+      "largura_cm": 15,
+      "altura_cm": 15,
+      "categoria": "Bonés",
+      "imagens": [
+        "img/bone.jpg"
+      ]
+    }
+  ]
+}

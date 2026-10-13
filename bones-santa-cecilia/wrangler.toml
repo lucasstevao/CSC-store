@@ -1,0 +1,16 @@
+name = "bones-santa-cecilia"
+main = "src/worker.js"
+compatibility_date = "2026-10-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+# Só as rotas /api/* executam o Worker; o resto é arquivo estático (grátis e ilimitado)
+run_worker_first = ["/api/*"]
+
+[vars]
+CEP_ORIGEM = "15061580"
+CONTACT_EMAIL = "SEU-EMAIL@exemplo.com"
+# Para testes use: https://sandbox.melhorenvio.com.br
+ME_BASE = "https://melhorenvio.com.br"
+# O token NÃO vai aqui. Cadastre ME_TOKEN como Secret no painel da Cloudflare.
