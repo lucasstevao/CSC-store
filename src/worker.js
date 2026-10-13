@@ -1,5 +1,3 @@
-// Calcula o frete no Melhor Envio. O token fica em segredo (env.ME_TOKEN).
-// Preço, peso e medidas vêm de public/loja.json, nunca do navegador.
 const json = (o, s = 200) =>
   new Response(JSON.stringify(o), { status: s, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
@@ -8,6 +6,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname !== '/api/frete') return json({ erro: 'Não encontrado' }, 404);
     if (request.method !== 'POST') return json({ erro: 'Método não permitido' }, 405);
+    if (!env.ME_TOKEN) return json({ erro: 'Frete indisponível.', detalhe: 'ME_TOKEN não está configurado na Cloudflare' }, 500);
 
     let body;
     try { body = await request.json(); } catch { return json({ erro: 'Requisição inválida' }, 400); }
@@ -41,7 +40,11 @@ export default {
         },
         body: JSON.stringify({ from: { postal_code: env.CEP_ORIGEM }, to: { postal_code: cep }, products })
       });
-      if (!r.ok) return json({ erro: 'Não foi possível calcular o frete agora.' }, 502);
+      if (!r.ok) {
+        let detalhe = '';
+        try { detalhe = (await r.text()).slice(0, 300); } catch {}
+        return json({ erro: 'Não foi possível calcular o frete agora.', status_melhor_envio: r.status, detalhe }, 502);
+      }
       const dados = await r.json();
       const opcoes = (Array.isArray(dados) ? dados : [])
         .filter(s => !s.error && (s.custom_price || s.price))
