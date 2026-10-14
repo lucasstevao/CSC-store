@@ -56,6 +56,25 @@ body {
 /* Todas as sections recebem padding padrão */
 section { padding: 7rem 3rem; }
 
+/* ============================================================
+   BOTÃO DESTAQUE DA LOJA NO MENU
+   ============================================================ */
+.nav-links a.nav-loja-btn {
+  background-color: var(--cinza-claro);
+  color: #fff !important;
+  padding: 0.55rem 1.3rem;
+  border-radius: 2px;
+  font-weight: 700 !important;
+  border: 1px solid var(--marrom-claro);
+  transition: all 0.3s ease;
+}
+
+.nav-links a.nav-loja-btn:hover {
+  background-color: var(--marrom-claro);
+  border-color: #fff;
+  transform: translateY(-1px);
+}
+
 
 /* ============================================================
    COMPONENTES REUTILIZÁVEIS
